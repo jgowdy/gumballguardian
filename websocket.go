@@ -5,10 +5,12 @@ type Transport interface {
 	Open()        // Client will connect, server will listen
 	Close()       // Client will disconnect, server will stop listening and disconnect all clients
 	OnConnect()   // When we connect or re-connect
-	SendMessage() // Send a new message to the other endpoint
+    OnDisconnect() // Handle disconnection
 	OnMessage()   // When we receive a new message from the other endpoint
-	SendReply()   // Send a response to a message we sent
 	OnError()     // When we have an error
+
+    SendMessage() // Send a new message to the other endpoint
+	SendReply()   // Send a response to a message we sent
 }
 
 type WebsocketClient struct {
@@ -74,3 +76,10 @@ func (wc WebsocketClient) SendReply() {
 func (wc WebsocketClient) OnError() {
 
 }
+
+type EmailAgent interface {
+    // TODO: Some interface for polling via IMAP or POP3 or ???
+    SendPlainTextEmail(targetEmail string, subject string, body string)
+    
+}
+
